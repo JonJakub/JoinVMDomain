@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+
+[global]
+  realm = {{ DomainName|upper }}
+  security = ADS
+  client signing = yes
+  client use spnego = yes
+  kerberos method = secrets and keytab
+  log file = /var/log/samba/%m.log

@@ -1,0 +1,5 @@
+# {{ ansible_managed }}
+
+uri {{ DomainName }} {{ DomainController }} ldap://{{ DomainController }}
+
+scope sub

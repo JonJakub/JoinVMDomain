@@ -1,0 +1,2 @@
+{{ LinuxDomainAdmin|regex_replace(' ','\ ')|lower }} ALL=(ALL) NOPASSWD:ALL
+

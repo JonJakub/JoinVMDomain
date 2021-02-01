@@ -1,0 +1,97 @@
+---
+- name: 'Ad_promene'
+  include_vars: "connection.yml"
+
+- name: 'Include OS specific vars'
+  include_vars: "RedHat.yml"
+ # no_log: "{{ adjoin_no_log }}"
+
+- name: 'Install packages'
+  include_tasks: "install-RedHat.yml"
+
+- name: 'Configure services'
+  template:
+    dest: "{{ conffile.dest }}"
+    src: "{{ conffile.src }}"
+    mode: 0644
+    owner: 'root'
+    group: 'root'
+#  no_log: "{{ adjoin_no_log }}"
+  loop:
+    - {src: 'ldap.conf.j2', dest: "{{ openldap_conffile }}"}
+    - {src: 'krb5.conf.j2', dest: '/etc/krb5.conf'}
+  loop_control:
+    loop_var: 'conffile'
+
+- name: "Configure Samba for each domain"
+  template:
+    dest: "/etc/samba/smb_{{ DomainName }}.conf"
+    src: "smb.conf.j2"
+    mode: 0644
+    owner: 'root'
+    group: 'root'
+ # no_log: "{{ adjoin_no_log }}"
+  loop: "{{ adjoin_domains }}"
+  loop_control:
+    loop_var: 'domain'
+
+- name: Join system to AD and add the computer object in the Linux OU
+  expect:
+    command: /bin/bash -c "/usr/sbin/realm join {{ DomainController }} --user={{username}} --computer-ou=OU={{ computerOU }} "
+    responses:
+      Password for *: "{{ password }}"
+
+
+- name: "Configure SSSD"
+  template:
+    dest: "/etc/sssd/sssd.conf"
+    src: "sssd.conf.j2"
+    mode: 0600
+    owner: 'root'
+    group: 'root'
+
+- name: 'reconfigure redhat pam'
+  command: "/usr/sbin/authconfig \
+    --enablesssd --enablerfc2307bis \
+    --enablesssdauth --disableforcelegacy \
+    --enablelocauthorize --enablemkhomedir \
+    --enablepamaccess --updateall"
+
+- name: 'restart sssd'
+  systemd:
+    name: 'sssd'
+    state: 'restarted'
+
+- name: "Configure services - Common"
+  systemd:
+    name: "{{ service.name }}"
+    enabled: "{{ service.enabled }}"
+    masked: "{{ service.masked }}"
+    state: "{{ service.state }}"
+  loop:
+    - {'name':'sssd', 'enabled':'yes', 'masked':'no', 'state':'started'}
+    - {'name':'dbus', 'enabled':'yes', 'masked':'no', 'state':'started'}
+    - {'name':'systemd-logind', 'enabled':'no', 'masked':'yes', 'state':'stopped'}
+  loop_control:
+    loop_var: 'service'
+
+- name: "Configure services - OS-specific"
+  systemd:
+    name: "{{ service.name }}"
+    enabled: "{{ service.enabled }}"
+    masked: "{{ service.masked }}"
+    state: "{{ service.state }}"
+  loop: "{{ os_specific_services }}"
+  loop_control:
+    loop_var: 'service'
+  when: os_specific_services is defined
+
+- name: "Configure Sudo permissions for admin users"
+  template:
+    dest: "/etc/sudoers.d/10_linux_admins"
+    src: "sudoers_10_linux_admins"
+    mode: 0440
+    validate: "visudo -cf %s"
+    owner: 'root'
+    group: 'root'
+  when: adjoin_configure_sudo

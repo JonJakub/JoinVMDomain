@@ -1,0 +1,26 @@
+- name: Join CentOS to Windows domain
+  hosts: 127.0.0.1
+  connection: local
+
+  vars_prompt:
+    - name: "username"
+      prompt: "Zadej Domenový username: "
+   
+    - name: "password"
+      promt: "Zadej Domenové heslo: "
+   
+    - name: "DomainName"
+      promt: "Nazev Domeny: "
+
+    - name: "DomainController"
+      promt: "Domain Server: "
+
+    - name: "computerOU"
+      promt: "computerOU: "
+
+    - name: "LinuxDomainAdmin"
+      promt: "Linux Domain Admin: "
+
+  tasks:
+  - name: Join
+    include_tasks: roles/tasks/main.yaml
