@@ -32,7 +32,7 @@ Playbook spustí Task roles/tasks/main.yaml
 - Nastaví sudoers (Linux Admin)
 
 
-parametr no_log akplikovat aby to na vystupu neukazovalo heslo atd.
+parametr no_log v roles/tasks/main.yml akplikovan aby to na vystupu neukazovalo heslo atd. 
 
 
 
