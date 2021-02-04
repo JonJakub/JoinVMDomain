@@ -1,25 +1,26 @@
 - name: Join CentOS to Windows domain
-  hosts: 127.0.0.1
-  connection: local
+  hosts: 51.145.230.155
+  become: yes  
 
   vars_prompt:
+    
     - name: "username"
       prompt: "Zadej Domenový username: "
    
     - name: "password"
-      promt: "Zadej Domenové heslo: "
+      prompt: "Zadej Domenové heslo: "
    
     - name: "DomainName"
-      promt: "Nazev Domeny: "
+      prompt: "Nazev Domeny: "
 
     - name: "DomainController"
-      promt: "Domain Server: "
+      prompt: "Domain Server: "
 
     - name: "computerOU"
-      promt: "computerOU: "
+      prompt: "computerOU: "
 
     - name: "LinuxDomainAdmin"
-      promt: "Linux Domain Admin: "
+      prompt: "Linux Domain Admin: "
 
   tasks:
   - name: Join

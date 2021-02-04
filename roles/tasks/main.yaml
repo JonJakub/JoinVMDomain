@@ -50,18 +50,6 @@
     owner: 'root'
     group: 'root'
 
-- name: 'reconfigure redhat pam'
-  command: "/usr/sbin/authconfig \
-    --enablesssd --enablerfc2307bis \
-    --enablesssdauth --disableforcelegacy \
-    --enablelocauthorize --enablemkhomedir \
-    --enablepamaccess --updateall"
-
-- name: 'restart sssd'
-  systemd:
-    name: 'sssd'
-    state: 'restarted'
-
 - name: "Configure services - Common"
   systemd:
     name: "{{ service.name }}"

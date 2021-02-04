@@ -4,11 +4,11 @@
 
 Je třeba zadat vstupy:
 
-- Domain Username + Password
-- Název domény
-- Domenový Controller
-- Organozační skupinu (ComputerOU)
-- Linux Admina
+Domain Username + Password
+Název domény
+Domenový Controller
+Organozační skupinu (ComputerOU)
+Linux Admina
 
 
 - Playbook spustí Task roles/tasks/main.yaml

@@ -20,7 +20,7 @@ adjoin_domains:
       ],
       ldap_base_dn: 'dc=jjon,dc=com',
       computer_objects_path: "{{ computerOU }}",
-      linux_admins: "{{ LinuxDomainAdmin  }}",
+      linux_admins: 'Linux Domain Admins',
       username: "{{ username }}",
       password: "{{ password }}" }
 
