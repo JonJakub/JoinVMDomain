@@ -24,7 +24,7 @@ Je třeba zadat vstupy:
 - Linux Admina
 
 
-- Playbook spustí Task roles/tasks/main.yaml
+Playbook spustí Task roles/tasks/main.yaml
 
 - Naistaluje potřebné balíčky z vars/RedHat.yml
 - Nakonfiguruje potřebné servicy (Samba,SSSD)
