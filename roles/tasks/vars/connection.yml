@@ -1,16 +1,13 @@
 ---
-# Hide sensitive information from task output
 adjoin_no_log: true
 
 # Common settings for all domains
 adjoin_sssd_homedir: '/home/%u'
 adjoin_sssd_default_shell: '/bin/bash'
-# Please note that disabling arcfour-hmac-md5 can NOT be done without some
-# work on the AD controller's side
 adjoin_kerberos_enctypes: 'aes256-cts arcfour-hmac-md5'
 
 # Configure sudo permissions for the administrative groups in this file
-adjoin_configure_sudo: false
+adjoin_configure_sudo: true
 
 # Domains to join
 adjoin_domains:
@@ -18,9 +15,7 @@ adjoin_domains:
       domain_controllers: [
         '{{ DomainController }}'
       ],
-      ldap_base_dn: 'dc=jjon,dc=com',
       computer_objects_path: "{{ computerOU }}",
       linux_admins: 'Linux Domain Admins',
       username: "{{ username }}",
       password: "{{ password }}" }
-

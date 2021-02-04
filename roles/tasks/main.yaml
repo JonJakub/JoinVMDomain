@@ -4,7 +4,7 @@
 
 - name: 'Include OS specific vars'
   include_vars: "RedHat.yml"
- # no_log: "{{ adjoin_no_log }}"
+  no_log: "{{ adjoin_no_log }}"
 
 - name: 'Install packages'
   include_tasks: "install-RedHat.yml"
@@ -16,7 +16,7 @@
     mode: 0644
     owner: 'root'
     group: 'root'
-#  no_log: "{{ adjoin_no_log }}"
+  no_log: "{{ adjoin_no_log }}"
   loop:
     - {src: 'ldap.conf.j2', dest: "{{ openldap_conffile }}"}
     - {src: 'krb5.conf.j2', dest: '/etc/krb5.conf'}
@@ -30,7 +30,7 @@
     mode: 0644
     owner: 'root'
     group: 'root'
- # no_log: "{{ adjoin_no_log }}"
+  no_log: "{{ adjoin_no_log }}"
   loop: "{{ adjoin_domains }}"
   loop_control:
     loop_var: 'domain'

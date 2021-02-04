@@ -17,19 +17,22 @@ ansible-playbook playbook.yaml -u vmadmin --ask-pass -kK
 
 Je třeba zadat vstupy:
 
-- Domain Username + Password
-- Název domény
-- Domenový Controller
-- Organozační skupinu (ComputerOU)
+- Domain Username + Password  
+- Název domény (example: jjon.com)
+- Domenový Controller (example: adwinservertest.internal.cloudapp.net)
+- Organizační skupinu (ComputerOU)
 - Linux Admina
 
 
 Playbook spustí Task roles/tasks/main.yaml
 
 - Naistaluje potřebné balíčky z vars/RedHat.yml
-- Nakonfiguruje potřebné servicy (Samba,SSSD)
-- Přípojí se přes realm do domény
-- Nastaví sudoers
+- Nakonfiguruje potřebné servicy (Samba,SSSD,Kerberos)
+- Přípojí se přes realm do domény (realm join Název domény  --user=Domain Username --computer-ou=OU=Organizační skupina )
+- Nastaví sudoers (Linux Admin)
+
+
+parametr no_log akplikovat aby to na vystupu neukazovalo heslo atd.
 
 
 
